@@ -7,8 +7,8 @@ namespace ConstructionLine.CodingChallenge
     public class SearchEngine
     {
         private readonly List<Shirt> _shirts;
-        private ILookup<Color, Shirt> _colourLookup;
-        private ILookup<Size, Shirt> _sizeLookup;
+        private readonly ILookup<Color, Shirt> _colourLookup;
+        private readonly ILookup<Size, Shirt> _sizeLookup;
 
         public SearchEngine(List<Shirt> shirts)
         {
@@ -46,7 +46,7 @@ namespace ConstructionLine.CodingChallenge
                 {
                     matches[shirt.Id] = shirt;
 
-                    searchResults.ColorCounts.Single(x => x.Color == optionsColor).Count++;
+                    searchResults.ColorCounts.Single(x => Equals(x.Color, optionsColor)).Count++;
                 }
             }
 
@@ -56,7 +56,7 @@ namespace ConstructionLine.CodingChallenge
                 {
                     matches[shirt.Id] = shirt;
 
-                    searchResults.SizeCounts.Single(x => x.Size == optionsSize).Count++;
+                    searchResults.SizeCounts.Single(x => Equals(x.Size, optionsSize)).Count++;
                 }
             }
 

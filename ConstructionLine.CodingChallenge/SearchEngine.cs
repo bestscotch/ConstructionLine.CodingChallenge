@@ -8,6 +8,8 @@ namespace ConstructionLine.CodingChallenge
     {
         private readonly List<Shirt> _shirts;
         private readonly Dictionary<Size, Dictionary<Color, List<Shirt>>> _lookup = new Dictionary<Size, Dictionary<Color, List<Shirt>>>();
+        private readonly ILookup<Color, Shirt> _colourLookup;
+        private readonly ILookup<Size, Shirt> _sizeLookup;
 
         public SearchEngine(List<Shirt> shirts)
         {
@@ -26,6 +28,9 @@ namespace ConstructionLine.CodingChallenge
             {
                 _lookup[shirt.Size][shirt.Color].Add(shirt);
             }
+
+            _colourLookup = shirts.ToLookup(s => s.Color);
+            _sizeLookup = shirts.ToLookup(s => s.Size);
         }
 
 
@@ -49,6 +54,7 @@ namespace ConstructionLine.CodingChallenge
 
             var matches = new Dictionary<Guid, Shirt>();
 
+            // Find results were colour & size options are specified
             foreach (var optionsColor in options.Colors)
             {
                 foreach (var optionsSize in options.Sizes)
@@ -62,6 +68,33 @@ namespace ConstructionLine.CodingChallenge
                 }
             }
 
+            // Find results where only colour options are specified
+            if (!options.Sizes.Any())
+            {
+                foreach (var optionsColor in options.Colors)
+                {
+                    foreach (var shirt in _colourLookup[optionsColor])
+                    {
+                        matches[shirt.Id] = shirt;
+
+                        searchResults.ColorCounts.Single(x => Equals(x.Color, optionsColor)).Count++;
+                    }
+                }
+            }
+
+            // Find results where only size options are specified
+            if (!options.Colors.Any())
+            {
+                foreach (var optionsSize in options.Sizes)
+                {
+                    foreach (var shirt in _sizeLookup[optionsSize])
+                    {
+                        matches[shirt.Id] = shirt;
+
+                        searchResults.SizeCounts.Single(x => Equals(x.Size, optionsSize)).Count++;
+                    }
+                }
+            }
 
             searchResults.Shirts = matches.Values.ToList();
 

@@ -7,7 +7,7 @@ namespace ConstructionLine.CodingChallenge
     public class SearchEngine
     {
         private readonly List<Shirt> _shirts;
-        private readonly Dictionary<Size, Dictionary<Color, List<Shirt>>> lookup = new Dictionary<Size, Dictionary<Color, List<Shirt>>>();
+        private readonly Dictionary<Size, Dictionary<Color, List<Shirt>>> _lookup = new Dictionary<Size, Dictionary<Color, List<Shirt>>>();
 
         public SearchEngine(List<Shirt> shirts)
         {
@@ -15,16 +15,16 @@ namespace ConstructionLine.CodingChallenge
 
             foreach (var size in Size.All)
             {
-                lookup[size] = new Dictionary<Color, List<Shirt>>();
+                _lookup[size] = new Dictionary<Color, List<Shirt>>();
                 foreach (var color in Color.All)
                 {
-                    lookup[size][color] = new List<Shirt>();
+                    _lookup[size][color] = new List<Shirt>();
                 }
             }
 
             foreach (var shirt in shirts)
             {
-                lookup[shirt.Size][shirt.Color].Add(shirt);
+                _lookup[shirt.Size][shirt.Color].Add(shirt);
             }
         }
 
@@ -53,7 +53,7 @@ namespace ConstructionLine.CodingChallenge
             {
                 foreach (var optionsSize in options.Sizes)
                 {
-                    foreach (var shirt in lookup[optionsSize][optionsColor])
+                    foreach (var shirt in _lookup[optionsSize][optionsColor])
                     {
                         matches[shirt.Id] = shirt;
                         searchResults.SizeCounts.Single(x => Equals(x.Size, optionsSize)).Count++;

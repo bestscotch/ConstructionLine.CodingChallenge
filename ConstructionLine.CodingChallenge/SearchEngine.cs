@@ -54,7 +54,7 @@ namespace ConstructionLine.CodingChallenge
 
             var matches = new Dictionary<Guid, Shirt>();
 
-            // Find results were colour & size options are specified
+            // Find results where colour & size options are specified
             foreach (var optionsColor in options.Colors)
             {
                 foreach (var optionsSize in options.Sizes)

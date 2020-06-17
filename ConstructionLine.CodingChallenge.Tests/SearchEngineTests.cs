@@ -34,7 +34,7 @@ namespace ConstructionLine.CodingChallenge.Tests
         }
 
         [Test]
-        public void Test2()
+        public void TestSizeOnly()
         {
             var shirts = new List<Shirt>
             {
